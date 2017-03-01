@@ -31,6 +31,8 @@ void Chip8::reset()
 	delayTimer = 0;
 	soundTimer = 0;
 
+	buzzer = false;
+
 	memset(pixels, 0, 64*32);
 
 	pixels[35][22] = true;
@@ -49,4 +51,9 @@ bool Chip8::getPixel(int x, int y)
 void Chip8::setKey(int key, bool isPressed)
 {
 	keyStates[key] = isPressed;
+}
+
+bool Chip8::isBuzzer()
+{
+	return buzzer;
 }

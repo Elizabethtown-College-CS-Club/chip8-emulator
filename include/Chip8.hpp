@@ -6,6 +6,7 @@ class Chip8
 		void tick();
 		bool getPixel(int, int);
 		void setKey(int, bool);
+		bool isBuzzer();
 
 	private:
 		unsigned char memory[4096];
@@ -17,6 +18,9 @@ class Chip8
 
 		unsigned char delayTimer;
 		unsigned char soundTimer;
+
+		// true following a tick where the sound timer expires
+		bool buzzer; 
 
 		bool keyStates[16]; // true for pressed, false for unpressed
 

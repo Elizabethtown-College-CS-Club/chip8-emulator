@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Chip8.hpp"
 
@@ -7,6 +8,16 @@ int convertKeycode(sf::Keyboard::Key);
 
 int main()
 {
+	// Load CHIP-8 buzzer sound
+	sf::SoundBuffer buffer;
+	if (!buffer.loadFromFile("res/beep.wav")) {
+		std::cerr << "Unable to load buzzer sound file, exiting" << std::endl;
+		return -1;
+	}
+	sf::Sound beep;
+	beep.setBuffer(buffer);
+	beep.play(); // Startup test beep (why not?)
+
 	// Non-resizable window with a titlebar and a "close" button
 	sf::RenderWindow window(sf::VideoMode(480, 240), "CHIP-8 Display", sf::Style::Titlebar | sf::Style::Close);
 	window.setFramerateLimit(60); // Force application to run near 60 FPS (CHIP-8 runs at 60Hz)
@@ -69,6 +80,10 @@ int main()
 
 		// Display changes
 		window.display();
+
+		// Sound buzzer if necessary
+		if (chip8.isBuzzer())
+			beep.play();
 	}
 
 	return 0;
