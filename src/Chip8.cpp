@@ -227,15 +227,30 @@ void Chip8::tick()
 		} break;
 		case 0xF: {
 			switch(opcode & 0x00FF){
+				int registerPos;
 				case 0x07:
-						//Vx = delay timer  Vx = registers[x]
-						//VF[15] is a intruction flag. Show a warning if this is used here.
-						int registerPos = opcode & 0x0F00;
-						if(registerPos == 15){
-							printf("warn: Register V[F] was assigned manually.");
-						}
-						registers[registerPos] = delayTimer;
-						printf("%04X (FX07): V[%X] = Delay Timer: %X\n",opcode, registerPos, delayTimer);
+					//Vx = delay timer  Vx = registers[x]
+					//VF[15] is a intruction flag. Show a warning if this is used here.
+					registerPos = opcode & 0x0F00;
+					if(registerPos == 15){
+						printf("warn: Register V[F] was assigned manually.");
+					}
+					registers[registerPos] = delayTimer;
+					printf("%04X (FX07): V[%X] = Delay Timer: %X\n",opcode, registerPos, delayTimer);
+				break;
+				case 0x0A:
+					registerPos = opcode & 0x0F00;
+					if(registerPos == 15){
+						printf("warn: Register V[F] was assigned manually.");
+					}
+					registers[registerPos] = soundTimer;
+					printf("%04X (FX07): V[%X] = Sound Timer: %X\n",opcode, registerPos, soundTimer);
+				break;
+				case 0x015:
+					registerPos = opcode & 0x0F00;
+					int regData = registers[registerPos];
+					address += regData;
+					printf("%04X (FX07): Memory pointer up %04X to %04X",opcode, regData, address);
 				break;
 			}
 
