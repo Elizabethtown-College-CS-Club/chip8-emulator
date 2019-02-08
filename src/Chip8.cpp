@@ -118,7 +118,7 @@ void Chip8::tick()
 			int regX = (opcode & 0x0F00) >> 8;
 			int regY = (opcode & 0x00F0) >> 4;
 			int value;
-			
+
 			switch(opcode & 0x000F)
 			{
 				case 0x0:
@@ -139,7 +139,7 @@ void Chip8::tick()
 					registers[regX] ^= registers[regY];
 					registers[0xF] = 0;
 					printf("%04X (8XY3): V[%X] ^= V[%X]\n", opcode, regX, regY);
-					break;				
+					break;
 				case 0x4:
 					value = (int)registers[regX] + (int)registers[regY];
 					if (value != (unsigned char)value)
@@ -179,12 +179,12 @@ void Chip8::tick()
 					break;
 				default:
 					break;
-			} 
+			}
 		} break;
 		case 0xA: { // ANNN
 			address = opcode & 0x0FFF;
 
-			printf("%04X (ANNN): \n", opcode);
+			printf("%04X (ANNN): Setting memory address to %04X \n", opcode, opcode&0x0FFF);
 		} break;
 		case 0xB: { // BNNN
 			unsigned short nnn = opcode & 0x0FFF;
@@ -225,9 +225,24 @@ void Chip8::tick()
 
 			printf("%04X (DXYN): drawing sprite\n", opcode);
 		} break;
+		case 0xF: {
+			switch(opcode & 0x00FF){
+				case 0x07:
+						//Vx = delay timer  Vx = registers[x]
+						//VF[15] is a intruction flag. Show a warning if this is used here.
+						int registerPos = opcode & 0x0F00;
+						if(registerPos == 15){
+							printf("warn: Register V[F] was assigned manually.");
+						}
+						registers[registerPos] = delayTimer;
+						printf("%04X (FX07): V[%X] = Delay Timer: %X\n",opcode, registerPos, delayTimer);
+				break;
+			}
+
+		}
 		default: {
 			printf("Unsupported opcode %04X, skipping!\n", opcode);
-		}
+		}break;
 	}
 
 	programCounter += 2 * pcDelta;

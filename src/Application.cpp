@@ -9,6 +9,7 @@ int convertKeycode(sf::Keyboard::Key);
 int main()
 {
 	// Load CHIP-8 buzzer sound
+
 	sf::SoundBuffer buffer;
 	if (!buffer.loadFromFile("res/beep.wav")) {
 		std::cerr << "Unable to load buzzer sound file, exiting" << std::endl;
@@ -17,6 +18,8 @@ int main()
 	sf::Sound beep;
 	beep.setBuffer(buffer);
 	beep.play(); // Startup test beep (why not?)
+
+
 
 	// Non-resizable window with a titlebar and a "close" button
 	sf::RenderWindow window(sf::VideoMode(480, 240), "CHIP-8 Display", sf::Style::Titlebar | sf::Style::Close);
@@ -35,7 +38,7 @@ int main()
 		keyState[i] = false;
 
 	// Create the CHIP-8 emulator
-	Chip8 chip8("roms/TETRIS");
+	Chip8 chip8("roms/maze");
 
 	while (window.isOpen())
 	{
