@@ -38,7 +38,7 @@ int main()
 		keyState[i] = false;
 
 	// Create the CHIP-8 emulator
-	Chip8 chip8("roms/TETRIS");
+	Chip8 chip8("roms/clock");
 
 	while (window.isOpen())
 	{
