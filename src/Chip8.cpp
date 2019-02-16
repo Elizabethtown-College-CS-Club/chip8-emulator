@@ -231,7 +231,7 @@ void Chip8::tick()
 				case 0x07:
 					//Vx = delay timer  Vx = registers[x]
 					//VF[15] is a intruction flag. Show a warning if this is used here.
-					registerPos = opcode & 0x0F00;
+					registerPos = (opcode & 0x0F00) >> 8;
 					if(registerPos == 15){
 						printf("warn: Register V[F] was assigned manually.\n");
 					}
@@ -239,19 +239,15 @@ void Chip8::tick()
 					printf("%04X (FX07): V[%X] = Delay Timer: %X\n",opcode, registerPos, delayTimer);
 				break;
 				case 0x0A:
-					registerPos = opcode & 0x0F00;
-					if(registerPos == 15){
-						printf("warn: Register V[F] was assigned manually.\n");
+					bool keyCheck = false;
+					while(!keyCheck){
+						for(int i = 0; i < 16; i++){
+							if(getKey(i)){
+								registers[(opcode & 0x0F00) >> 8] = i;
+								keyCheck = true;
+							}
+						}
 					}
-					registers[registerPos] = soundTimer;
-					printf("%04X (FX07): V[%X] = Sound Timer: %X\n",opcode, registerPos, soundTimer);
-				break;
-				case 0x015:
-					registerPos = opcode & 0x0F00;
-					printf("Register Pos %d\n", registerPos);
-					int regData = registers[registerPos];
-					address += regData;
-					printf("%04X (FX15): Memory pointer up %04X to %04X\n",opcode, regData, address);
 				break;
 			}break;
 
@@ -273,6 +269,12 @@ bool Chip8::getPixel(int x, int y)
 void Chip8::setKey(int key, bool isPressed)
 {
 	keyStates[key] = isPressed;
+}
+
+bool Chip8::getKey(int key){
+	if(keyStates[key] != 0)
+		return 1;
+	return 0;
 }
 
 bool Chip8::isBuzzer()
