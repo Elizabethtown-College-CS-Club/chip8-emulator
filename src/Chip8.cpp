@@ -240,14 +240,18 @@ void Chip8::tick()
 				break;
 				case 0x0A:
 					bool keyCheck = false;
-					while(!keyCheck){
+						printf("Stuck?");
 						for(int i = 0; i < 16; i++){
 							if(getKey(i)){
+								printf("no!");
 								registers[(opcode & 0x0F00) >> 8] = i;
 								keyCheck = true;
 							}
 						}
-					}
+
+						if(!keyCheck){
+							programCounter += 2;
+						}
 				break;
 			}break;
 
