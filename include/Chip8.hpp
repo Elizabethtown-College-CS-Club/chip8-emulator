@@ -9,6 +9,8 @@ class Chip8
 		bool getKey(int);
 		bool isBuzzer();
 
+		//Utility
+
 	private:
 		unsigned char memory[4096];
 		unsigned char registers[16];

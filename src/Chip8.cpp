@@ -36,11 +36,12 @@ void Chip8::reset()
 
 	memset(pixels, 0, 64*32);
 
-	pixels[35][22] = true;
 }
 
 void Chip8::tick()
 {
+	getchar();
+
 	printf("[%03X] ", programCounter);
 
 	unsigned short opcode = memory[programCounter] << 8;
@@ -260,6 +261,8 @@ void Chip8::tick()
 			printf("Unsupported opcode %04X, skipping!\n", opcode);
 		}break;
 	}
+
+	printf("%d",pcDelta);
 
 	programCounter += 2 * pcDelta;
 

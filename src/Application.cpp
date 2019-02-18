@@ -10,6 +10,11 @@ int main()
 {
 	// Load CHIP-8 buzzer sound
 
+
+	char rom[64];
+	printf("Enter ROM file path: ");
+	scanf("%s",rom);
+
 	sf::SoundBuffer buffer;
 	if (!buffer.loadFromFile("res/beep.wav")) {
 		std::cerr << "Unable to load buzzer sound file, exiting" << std::endl;
@@ -38,7 +43,7 @@ int main()
 		keyState[i] = false;
 
 	// Create the CHIP-8 emulator
-	Chip8 chip8("roms/clock");
+	Chip8 chip8(rom);
 
 	while (window.isOpen())
 	{
