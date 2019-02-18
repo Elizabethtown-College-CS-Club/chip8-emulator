@@ -251,7 +251,7 @@ void Chip8::tick()
 						}
 
 						if(!keyCheck){
-							programCounter += 2;
+							pcDelta = 0;
 						}
 				break;
 			}break;

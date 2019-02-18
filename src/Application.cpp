@@ -77,6 +77,7 @@ int main()
 		window.clear(sf::Color::Black);
 
 		// Draw all pixels from CHIP-8 graphics buffer
+		// TODO: Fix this, no need to redraw the scren after every tick only on 0x00E0 and 0xDXYN
 		for (int x = 0; x < 64; x++) {
 			for (int y = 0; y < 32; y++) {
 				if (chip8.getPixel(x, y)) {
